@@ -23,6 +23,7 @@ namespace ClickGrabRepeat
         public Form1()
         {
             InitializeComponent();
+
             cgr = new CGRWorker();
             ui = new updateUIDelegate(updateUI);
 
@@ -35,24 +36,40 @@ namespace ClickGrabRepeat
 
         public void updateUI(CGRWorker e)
         {
-            // Update Progress Indicator
-            lblProgress.Text = "" + e.getProgress();
-       
-            // Show maximum if Fixed
-            if (e.repeat == CGRWorker.RepeatType.Fixed)
-                lblProgress.Text = lblProgress.Text + "/" + e.repeatTimes;
+            // We have finished gracefully
+            if (e.running)
+            {
+                // Update Progress Indicator
+                lblProgress.Text = "" + e.getProgress();
 
-            
+                // Show maximum if Fixed
+                if (e.repeat == CGRWorker.RepeatType.Fixed)
+                {
+                    lblProgress.Text = lblProgress.Text + "/" + e.repeatTimes;
+
+                    // Get a percentage value
+                    // http://stackoverflow.com/questions/2124283/whats-the-best-way-to-create-a-percentage-value-from-two-integers-in-c
+                    barProgress.Value = (100 * e.getProgress()) / e.repeatTimes;
+                }
+
+            }
+            else
+            {
+                lblProgress.Text = "Finished!";
+                barProgress.Value = 100;
+            }
+
+            startCheck();
         }
 
-        public void startCheck()
+        private void startCheck()
         {
-            // Check if Start is ready to be rpessed
+            // Check if Start is ready to be pressed
             btnStart.Enabled = (cgr.click != null &&
                                 cgr.grab != null &&
                                 cgr.saveFolder != null &&
                                 cgr.saveFolder.Length != 0 &&
-                                (cgrThread == null || !cgrThread.IsAlive));
+                                !cgr.running);
         }
 
 
@@ -95,8 +112,16 @@ namespace ClickGrabRepeat
             startCheck();
         }
 
-        // Start
+        // Start & Stop Button Handling
         private void btnStart_Click(object sender, EventArgs e)
+        {
+            if (!cgr.running) {
+                startWorker();
+            }
+        }
+
+        // Start the worker
+        public void startWorker()
         {
             cgr.progressUpdate += W_progressUpdate;
             cgrThread = new Thread(cgr.clickGrabRepeat);
@@ -106,6 +131,27 @@ namespace ClickGrabRepeat
                 minimizeToTray();
 
             startCheck();
+        }
+
+        // Abrupt Stop / Indefinite Stop of Worker
+        // Should this stop gracefully?
+        public void stopWorker()
+        {
+            cgr.progressUpdate -= W_progressUpdate;
+
+            // Stop if needed
+            if (cgrThread != null && cgrThread.IsAlive)
+                cgrThread.Abort();
+
+            startCheck();
+        }
+
+        public void toggleConfigControls()
+        {
+            clickBox.Enabled = !clickBox.Enabled;
+            regionBox.Enabled = !regionBox.Enabled;
+            repeatBox.Enabled = !repeatBox.Enabled;
+            chkMinimize.Enabled = !chkMinimize.Enabled;
         }
 
         // Handle events posted from Thread to UI Thread
@@ -163,9 +209,6 @@ namespace ClickGrabRepeat
             if (cgrThread != null && cgrThread.IsAlive)
                 cgrThread.Abort();
         }
-
-
-
 
         private void minimizeToTray()
         {

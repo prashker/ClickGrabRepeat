@@ -65,6 +65,10 @@ namespace ClickGrabRepeat
             {
                 while (progress <= repeatTimes)
                 {
+                    // Notify update to UI thead
+                    if (progressUpdate != null)
+                        progressUpdate(this, null);
+
                     // Click
                     LeftMouseClick(click.X, click.Y);
 
@@ -85,10 +89,6 @@ namespace ClickGrabRepeat
 
                     // Repeat
                     progress++;
-
-                    // Notify update to UI thead
-                    if (progressUpdate != null)
-                        progressUpdate(this, null);
                 }
             }
 
@@ -139,7 +139,7 @@ namespace ClickGrabRepeat
             b.Save(fullPath, f);
         }
 
-        //http://stackoverflow.com/questions/8272681/how-can-i-simulate-a-mouse-click-at-a-certain-position-on-the-screen
+        // http://stackoverflow.com/questions/8272681/how-can-i-simulate-a-mouse-click-at-a-certain-position-on-the-screen
 
         //This is a replacement for Cursor.Position in WinForms
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -158,5 +158,6 @@ namespace ClickGrabRepeat
             mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
+
     }
 }

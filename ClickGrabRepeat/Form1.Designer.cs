@@ -52,6 +52,7 @@
             this.chkMinimize = new System.Windows.Forms.CheckBox();
             this.lblProgress = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.barProgress = new System.Windows.Forms.ProgressBar();
             this.regionBox.SuspendLayout();
             this.clickBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWaitTime)).BeginInit();
@@ -245,7 +246,7 @@
             this.lblHome.Size = new System.Drawing.Size(87, 13);
             this.lblHome.TabIndex = 11;
             this.lblHome.TabStop = true;
-            this.lblHome.Text = "Samuel Prashker";
+            this.lblHome.Text = "Samuel &Prashker";
             this.lblHome.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblHome_LinkClicked);
             // 
             // saveBox
@@ -290,11 +291,13 @@
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
-            this.lblProgress.Location = new System.Drawing.Point(284, 301);
+            this.lblProgress.BackColor = System.Drawing.SystemColors.Control;
+            this.lblProgress.Location = new System.Drawing.Point(322, 281);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(48, 13);
             this.lblProgress.TabIndex = 13;
             this.lblProgress.Text = "Progress";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // notifyIcon
             // 
@@ -302,12 +305,20 @@
             this.notifyIcon.Text = "Huh?";
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
+            // barProgress
+            // 
+            this.barProgress.Location = new System.Drawing.Point(229, 297);
+            this.barProgress.Name = "barProgress";
+            this.barProgress.Size = new System.Drawing.Size(141, 23);
+            this.barProgress.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 329);
             this.Controls.Add(this.lblProgress);
+            this.Controls.Add(this.barProgress);
             this.Controls.Add(this.chkMinimize);
             this.Controls.Add(this.saveBox);
             this.Controls.Add(this.lblHome);
@@ -358,6 +369,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown nudWaitTime;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ProgressBar barProgress;
     }
 }
 
