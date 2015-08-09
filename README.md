@@ -23,10 +23,10 @@ This is an application that performs three simple tasks.
 ### Coded by
 [@prashker](http://prashker.net)
 
-# How-to Code:
+### How-to Code:
 * Coded in VS2015 with C#
 
-# Pull Requests
+### Pull Requests
 * Welcome! Some much needed work is necessary.
 
 ### Pet Project
